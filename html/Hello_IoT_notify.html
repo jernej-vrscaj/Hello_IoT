@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Hello IoT</title>
+    <script type="text/javascript">
+
+        function updateValues(clbk) {
+            var txtFile = new XMLHttpRequest();
+            txtFile.open("GET", "/env_val.txt", true);
+            txtFile.onreadystatechange = function() {
+               if (this.readyState == 4) {
+                   if(this.status == 200) {
+                       clbk(null, this.responseText);
+                   }
+                   else {
+                      clbk(this.statusText);
+                   }
+                }
+            };
+            txtFile.send(null);    
+        }
+
+        function callback(err, response) {
+            if(err) {
+                alert("Error: " + err);
+            }
+            else {
+                var resp = response;
+                var n = resp.lastIndexOf("T");
+                var values = resp.slice(n);
+                var arrValues = values.split(",");
+                var chck = arrValues[0].charAt(0);
+                if (chck == "T") {
+                    document.getElementById("T").innerHTML = arrValues[0];
+                    document.getElementById("H").innerHTML = arrValues[1];
+                    document.getElementById("P").innerHTML = arrValues[2];
+                }
+            }
+        }
+
+        updateValues(callback);
+       
+        setInterval(function(){updateValues(callback);}, 1000);
+        
+
+    </script>
+    <style>
+    * {
+    box-sizing: border-box;
+    }
+    html{ 
+    background: url(above_the_clouds_4-wallpaper-1920x1080.jpg) no-repeat center fixed;  
+    background-size: cover;
+    background-color: rgba(128, 128, 128, 0.4); /* Used if the image is unavailable */
+    height: 100%;
+    width: 100%;
+    }
+    .myfont{
+    color: white;
+    text-shadow: 1px 1px rgba(0, 0, 0, 1);
+    font-family: Trebuchet MS, Helvetica, sans-serif;   
+    }
+    .window {
+    float:left;
+    width: 22%;
+    }
+    .tile {
+    font-size: 120%;
+    text-align: left;
+    background-color: rgba(128, 128, 128, 0.2);
+    border: 0px solid gray;
+    margin-bottom: 20px;
+    padding: 12px;
+    display: block;
+    width: 100%;
+    }
+    .btn{
+    font-size: 120%;
+    text-align: left;
+    background-color: rgba(128, 128, 128, 0.2);
+    border: 0px solid gray;
+    margin-bottom: 20px;
+    padding: 12px;
+    display: block;
+    width: 100%;
+    }
+    .btn:hover {
+    background-color: rgba(128, 128, 128, 0.5);
+    cursor: pointer;
+    }
+    .btn:active {
+    background-color: rgba(104, 183, 248, 1);
+    cursor: pointer;
+    }
+    .btn:focus {
+    background-color: rgba(104, 183, 248, 1);
+    cursor: pointer;
+    }
+    .switch {
+    position: relative;
+    display: block;
+    width: 60px;
+    height: 34px;
+    }
+    .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(180, 192, 192, 1);
+    transition: 0.4s;
+    }
+    .slider:hover{
+    background-color: rgba(128, 128, 128, 1);
+    }
+    .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    }
+    input:checked + .slider {
+    background-color: rgba(104, 183, 248, 1);
+    }
+    input:checked + .slider:before {
+    transform: translateX(26px);
+    }
+    table {
+    float: right;
+    width: 35%;
+    text-align: left;
+    font-size: 200%;
+    background-color: rgba(128, 128, 128, 0.2);
+    border: 0;
+    border-collapse: collapse;
+    }
+    th, td {
+    padding: 12px;
+    }
+    /* Use a media query to add a break point at 768px: */
+    @media screen and (max-width:768px) {
+    .window, .tile, .btn, table, th, td {
+    width: 100%; /* The width is 100%, when the viewport is 768px or smaller */
+    }
+    }
+    </style>
+  </head>
+  <body> 
+    <h1 class="myfont" style="font-size: 300%;">Welcome to the world of IoT!</h1>
+    </br>
+    </br>
+    <form action="/cgi-bin/Hello_IoT_CGI_notify.py" method="post">
+    <div class="window">
+      <p class="tile myfont">Fahrenheit</p>
+      <label class="switch">
+        <input type="checkbox" name="fahrenheit" value="Fahrenheit">
+        <span class="slider"></span>
+      </label>
+      <p class="tile myfont">Notifications</p>
+      <p><input class="btn myfont" type="submit" name="notifyON" value="ON"></p>
+      <p><input class="btn myfont" type="submit" name="notifyOFF" value="OFF" formaction="/cgi-bin/Hello_IoT_CGI_main.py"></p>
+      <p><input class="btn myfont" type="submit" name="exitN" value="Exit Notifications" formaction="/cgi-bin/Hello_IoT_CGI_main.py"></p>
+    </div>
+    </form>
+    </br>
+    <table class="myfont">
+      <tr>
+        <td>T = 23.54 &degC</td>
+      </tr>
+      <tr>
+        <td>H = 51.26 %</td>
+      </tr>
+      <tr>
+        <td>P = 998.56 hPa</td>
+      </tr>
+    </table>    
+  </body>
+</html>
