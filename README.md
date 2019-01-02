@@ -119,7 +119,7 @@ To accomplish this, few settings need to be applied:
 - Save Python scripts in Unix-like endings (only LF), if you work on Windows
 - Script starts with `#!/usr/bin/python3` as it should be executed in python3
 - Format the output so that browser can understand it. Before any other outputs, you must add `print('Content-Type: text/html \n')`. Make sure it has new-line feed at the end and preferably write this line as close as possible to the beginning of a script file (if you enable debugging through web with `import cgitb` and `cgitb.enable()`, e.g. if some imported module is missing, it should display error in a browser as it would in command-line).
-- Add the following (root access nedded) in `/etc/apache2/conf-avaible/serve-cgi-bin.conf`
+- Add the following (root access needed) in `/etc/apache2/conf-avaible/serve-cgi-bin.conf`
 
 ```
 ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
@@ -156,7 +156,7 @@ Main HTML page image: `above_the_clouds_4-wallpaper-1920x1080.jpg` [image web so
 
 Error HTML page image: `Nature___Sundown_Golden_sunset_above_the_clouds_042961_23.jpg` [image web source](https://www.zastavki.com/eng/Nature/Sundown/wallpaper-42961.htm)
 
-Same permissions as for the text file can be applied to these two images as well. 
+Same permissions as for the text file can be applied to these two images as well.
 
 ## Running Hello IoT application
 
