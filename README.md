@@ -9,7 +9,7 @@ All code and IDE's used in this project are open-source.
 Hardware:
 - [RaspberryPi model 3B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
 - [STM32L4 Discovery kit IoT node (ref B-L475E-IOT01A)](https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html)
-- Smartphone with [nRF Connect for Mobile](https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp) for Android or [LightBlue](https://itunes.apple.com/gb/app/lightblue-bluetooth-low-energy/id557428110?mt=8) for iPhone (*optional) 
+- Smartphone with [nRF Connect for Mobile](https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp) for Android or [LightBlue](https://itunes.apple.com/gb/app/lightblue-bluetooth-low-energy/id557428110?mt=8) for iPhone (*optional)
 
 IDE:
 - [Microsoft Visual Studio Community 2017](https://visualstudio.microsoft.com/vs/community/)
@@ -28,7 +28,7 @@ Programming / script languages:
 Project can be divided into two parts:
 
 - BLE central/peripheral communication
-- Web client/server communication 
+- Web client/server communication
 
 When client connects to **RaspberryPi** via `WiFi` or `LAN`, through its `IP address`, it initiates connection to a self-advertising **IoT node** and reads `GATT Environmental Sensing Service Characteristics` (temperature, humidity and pressure), which are then written to a text file. Values are updated in an `HTML` page by a `XMLHttpRequest`.
 Client can also select between one-time read or enables `Notifications`.
@@ -41,23 +41,23 @@ Client can also select between one-time read or enables `Notifications`.
 
 ### Building the application
 
-Firmware for this board was written using Mbed Online Compiler and was published at [my mbed profile](https://os.mbed.com/users/jernej_vrscaj/code/Hello_IoT_BLE/). 
+Firmware for this board was written using Mbed Online Compiler and was published at [my mbed profile](https://os.mbed.com/users/jernej_vrscaj/code/Hello_IoT_BLE/).
 
 Also its initial commit (file revision: [*0:0681ebb27b3c*](https://os.mbed.com/users/jernej_vrscaj/code/Hello_IoT_BLE/rev/0681ebb27b3c/)) is uploaded to this folder [/mbed](./mbed)
 
 Code is based on [mbed-os-example-ble](https://github.com/ARMmbed/mbed-os-example-ble) and modified to support `Environmental Sensing Service`.
- 
+
 One can import this example in a Mbed Online Compiler, given that it has an account (it is free). There it can be compiled and downloaded to this board.
 
 ### Checking for success
 
 Screen captures depicted below show what is expected from this example if the scanner used is **nRF Connect**.
 
-- Start a scan and connect to a device named **IoT_SENSOR**. 
+- Start a scan and connect to a device named **IoT_SENSOR**.
 
 ![scan_nRF_Connect](./img/scan_nRF_Connect.png "Scan for IoT_Sensor")
 
-- Discover the services and the characteristics on the device. The **Environmental Sensing** service has the UUID `0x181A` with characteristics **Temperature** `0x2A6E`, **Humidity** `0x2A6F` and **Pressure** `0x2A6D`. 
+- Discover the services and the characteristics on the device. The **Environmental Sensing** service has the UUID `0x181A` with characteristics **Temperature** `0x2A6E`, **Humidity** `0x2A6F` and **Pressure** `0x2A6D`.
 
 ![environmental_service_nRF_Connect](./img/environmental_service_nRF_Connect.png "Environmental Sensing service")
 
@@ -71,16 +71,16 @@ Screen captures depicted below show what is expected from this example if the sc
 
 Python module [Bluepy](https://github.com/IanHarvey/bluepy) is used to interface with Bluetooth on Linux.
 
-After package installation, you can use command-line `$ sudo blescan -d` which scans for BT devices, connects to them and displays their services. 
+After package installation, you can use command-line `$ sudo blescan -d` which scans for BT devices, connects to them and displays their services.
 
 Note that Environmental characteristic values here are in type `str`!
-For a temperature measurement that is `s'3809'` and it can be represented as a `hex` value `0x0938`. Decimal value would then be `2360` or final `23.60`  
+For a temperature measurement that is `s'3809'` and it can be represented as a `hex` value `0x0938`. Decimal value would then be `2360` or final `23.60`
 
 ![bluepy_cmd](./img/bluepy_cmd.png "Bluepy scan for devices in cmd-line")
 
 However in Python script these values are read as type `byte`.
 
-```python 
+```python
 # Read data from Temperature characteristic #
 uuid_ch_temp = btle.UUID('00002a6e-0000-1000-8000-00805f9b34fb')
 ch_temp = svc_env.getCharacteristics(uuid_ch_temp)[0]
@@ -91,7 +91,7 @@ print('T_tuple_type_int =',temp_tuple)
 print('T_type_int =',temp_tuple[0])
 ```
 
-Temperature reading outputs `utf-8` encoded type byte value `b'd\t'` consisting of two characters `d`, which is `0x64` and `t as a TAB`, which is `0x09`. 
+Temperature reading outputs `utf-8` encoded type byte value `b'd\t'` consisting of two characters `d`, which is `0x64` and `t as a TAB`, which is `0x09`.
 With a help of Python's [struct](https://docs.python.org/2/library/struct.html) model this can be converted to an integer value of `0x0964` or rather `2404`. Please note that `struct.unpack` outputs a tuple, so read the value by index `temp_tuple[0]`.
 
 ![temp_value](./img/temp_value.png "Temperature value")
@@ -115,12 +115,12 @@ Managing CGI scripts is done by [Apache Web Server](https://www.raspberrypi.org/
 
 After package installation, Apache server is running (if not `$ sudo service apache2 start`). Remote client can now execute Python scripts remotely by entering an IP address of a RaspberryPi and a Python script name in a browser, in our case: `http://IP_ADDRESS/cgi-bin/Hello_IoT_CGI_main.py`
 
-To accomplish this, few settings need to be applied: 
+To accomplish this, few settings need to be applied:
 - Save Python scripts in Unix-like endings (only LF), if you work on Windows
-- Scripts starts with `#!/usr/bin/python3` as it should be executed in python3
+- Script starts with `#!/usr/bin/python3` as it should be executed in python3
 - Format the output so that browser can understand it. Before any other outputs, you must add `print('Content-Type: text/html \n')`. Make sure it has new-line feed at the end and preferably write this line as close as possible to the beginning of a script file (if you enable debugging through web with `import cgitb` and `cgitb.enable()`, e.g. if some imported module is missing, it should display error in a browser as it would in command-line).
-- Add the following in `/etc/apache2/conf-avaible/serve-cgi-bin.conf`
-  
+- Add the following (root access nedded) in `/etc/apache2/conf-avaible/serve-cgi-bin.conf`
+
 ```
 ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
 <Directory "/usr/lib/cgi-bin">
@@ -156,7 +156,7 @@ Main HTML page image: `above_the_clouds_4-wallpaper-1920x1080.jpg` [image web so
 
 Error HTML page image: `Nature___Sundown_Golden_sunset_above_the_clouds_042961_23.jpg` [image web source](https://www.zastavki.com/eng/Nature/Sundown/wallpaper-42961.htm)
 
-Same permission as for the text file can be applied to these two images as well. 
+Same permissions as for the text file can be applied to these two images as well. 
 
 ## Running Hello IoT application
 
@@ -168,7 +168,7 @@ RaspberryPi connects to IoT node, read characteristic values, saves it in a text
 
 ![main_page_temp_C](./img/main_page_temp_C.png "Main page Celsius")
 
-Default temperature scale is Celsius, but can be switched to Fahrenheit by toggling the checkbox `Fahrenheit` and submitting the value. Readings are done again, these time calculated to Fahrenheit.  
+Default temperature scale is Celsius, but can be switched to Fahrenheit by toggling the checkbox `Fahrenheit` and submitting the value. Readings are done again, these time calculated to Fahrenheit.
 
 ![main_F_check](./img/main_F_check.png "Main page Fahrenheit checked") ![main_temp_F](./img/main_temp_F.png "Main page Fahrenheit")
 
@@ -183,7 +183,7 @@ Pressing the submit button `ON` will call script `Hello_IoT_CGI_notify.py` at `h
 This script will loop forever and values will be updated every second (by default). Temperature can be displayed in Fahrenheit by toggling the checkbox `Fahrenheit` before submitting the button `ON`.
 To stop notifications either press button `OFF` and stay in the notification menu, or press button `Exit Notifications` and return to the main menu. This will call script `Hello_IoT_CGI_main.py` which *kills* the script `Hello_IoT_CGI_notify.py` with a `KeyboardInterrupt` signal.
 
-*Firefox users*: Note that before pressing buttons `OFF` or `Exit Notifications` you must stop the page loading by pressing ![stop_page_loading_ff](./img/stop_page_loading_ff.png "Stop page loading Firefox") in a browser. 
+*Firefox users*: Note that before pressing buttons `OFF` or `Exit Notifications` you must stop the page loading by pressing ![stop_page_loading_ff](./img/stop_page_loading_ff.png "Stop page loading Firefox") in a browser.
 
 *(I don't know if this is a Firefox feature, because in Chrome and Internet Explorer this step can be skipped.)*
 
@@ -197,13 +197,13 @@ If something goes wrong, exeptions are raised through script and HTML page `Erro
 
 HTML pages are embedded in Python scripts and are send to browser via `print` statements.
 
-For future reference they are included in folder [/html](./html) as a single `.html` file. 
+For future reference they are included in folder [/html](./html) as a single `.html` file.
 
-*Note that environmental values are hard-coded.* 
+*Note that environmental values are hard-coded.*
 
 To open HTML page with a background image in the same folder, url path of the image is changed
 
-from 
+from
 
 `background: url(/above_the_clouds_4-wallpaper-1920x1080.jpg) no-repeat center fixed;`
 
@@ -242,6 +242,6 @@ However you could just change the definition in `main.cpp` and leave the others,
 
 ## License
 
-Mbed code is avaiable under [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0). 
+Mbed code is avaiable under [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
 
 All other code is published under [MIT License](LICENSE.md) and is free of use and without warranty.
