@@ -41,7 +41,7 @@ Client can also select between one-time read or enables `Notifications`.
 
 ### Building the application
 
-Firmware for this board was written using **Mbed Online Compiler** and was published at [my mbed profile](https://os.mbed.com/users/jernej_vrscaj/code/Hello_IoT_BLE/).
+Firmware for this board was written using **Mbed Online Compiler** and is published at [my mbed profile](https://os.mbed.com/users/jernej_vrscaj/code/Hello_IoT_BLE/).
 
 Also its initial commit (file revision: [*0:0681ebb27b3c*](https://os.mbed.com/users/jernej_vrscaj/code/Hello_IoT_BLE/rev/0681ebb27b3c/)) is uploaded to this folder [/mbed](./mbed)
 
