@@ -3,7 +3,7 @@
 ## Introduction
 This is an entry-level project to the world of connected devices, hence the title `Hello IoT`.
 
-All code and IDE's used in this project are open-source.
+All code in this project is open-source.
 [License](#license)
 
 Hardware:
@@ -11,7 +11,7 @@ Hardware:
 - [STM32L4 Discovery kit IoT node (ref B-L475E-IOT01A)](https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html)
 - Smartphone with [nRF Connect for Mobile](https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp) for Android or [LightBlue](https://itunes.apple.com/gb/app/lightblue-bluetooth-low-energy/id557428110?mt=8) for iPhone (*optional)
 
-IDE:
+IDE (free):
 - [Microsoft Visual Studio Community 2017](https://visualstudio.microsoft.com/vs/community/)
 - [Mbed Online Compiler](https://os.mbed.com/)
 
@@ -67,7 +67,7 @@ Screen captures depicted below show what is expected from this example if the sc
 
 ## RaspberryPi 3B+ setup
 
-### BLE interface
+### BLE (Bluetooth Low Energy) interface
 
 Python module [Bluepy](https://github.com/IanHarvey/bluepy) is used to interface with Bluetooth on Linux.
 
