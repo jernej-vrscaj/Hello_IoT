@@ -1,7 +1,7 @@
 # Hello IoT
 
 ## Introduction
-This is an entry-level project to the world of connected devices, hence the title `Hello IoT`.
+This is an entry-level project to a world of connected devices, hence the title `Hello IoT`.
 
 All code in this project is open-source.
 [License](#license)
