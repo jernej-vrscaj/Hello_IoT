@@ -213,7 +213,7 @@ to
 
 ### Connection parameters
 
-In mbed application `Hello IoT BLE`, advertising time and sensor values update interval on connection, are defined in file `main.cpp`, in [ms].
+In mbed application `Hello IoT BLE`, advertising time and sensor values update interval on connection are defined in file `main.cpp`, in [ms].
 ```
 #define ADVERTISING_INTERVAL 1000
 #define UPDATE_VALUES_INTERVAL 1000
